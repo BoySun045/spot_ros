@@ -1,5 +1,13 @@
 <launch>
-  <param name="robot_description" command="$(find xacro)/xacro $(find spot_description)/urdf/spot.urdf.xacro" />
+  <arg name="with_arm" default="false" />
+
+  <group if="$(eval arg('with_arm') ==true)">
+    <param name="robot_description" command="$(find xacro)/xacro $(find spot_description)/urdf/spot_with_arm/model.urdf" />
+  </group>
+
+  <group if="$(eval arg('with_arm') ==false)">
+    <param name="robot_description" command="$(find xacro)/xacro $(find spot_description)/urdf/spot.urdf.xacro" />
+  </group>
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 </launch>

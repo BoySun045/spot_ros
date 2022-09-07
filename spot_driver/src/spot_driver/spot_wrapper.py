@@ -230,12 +230,12 @@ class SpotWrapper():
         self._last_velocity_command_time = None
 
         self._front_image_requests = []
-        for source in front_image_sources:
-            self._front_image_requests.append(build_image_request(source, image_format=image_pb2.Image.FORMAT_RAW))
+        # for source in front_image_sources:
+        #     self._front_image_requests.append(build_image_request(source, image_format=image_pb2.Image.FORMAT_RAW))
 
         self._side_image_requests = []
-        for source in side_image_sources:
-            self._side_image_requests.append(build_image_request(source, image_format=image_pb2.Image.FORMAT_RAW))
+        # for source in side_image_sources:
+        #     self._side_image_requests.append(build_image_request(source, image_format=image_pb2.Image.FORMAT_RAW))
 
         self._rear_image_requests = []
         for source in rear_image_sources:
