@@ -32,19 +32,35 @@ add_message_files(
   LeaseResource.msg
   PowerState.msg
   SystemFaultState.msg
+  DockState.msg
+  ObstacleParams.msg
+  TerrainParams.msg
+  TerrainState.msg
 )
 
 add_service_files(
   FILES
   ListGraph.srv
   SetLocomotion.srv
+  SetSwingHeight.srv
   SetVelocity.srv
   ClearBehaviorFault.srv
+  ArmJointMovement.srv
+  ConstrainedArmJointMovement.srv
+  GripperAngleMove.srv
+  ArmForceTrajectory.srv
+  HandPose.srv
+  SetObstacleParams.srv
+  SetTerrainParams.srv
+  PosedStand.srv
+  Dock.srv
+  GetDockState.srv
 )
 
 add_action_files(
   FILES
   NavigateTo.action
+  PoseBody.action
   Trajectory.action
 )
 
