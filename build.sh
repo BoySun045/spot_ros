@@ -1,0 +1,1 @@
+docker build --tag cvg/spot_ros_driver:latest  .
