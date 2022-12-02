@@ -1,6 +1,6 @@
 <launch>
-  <arg name="username" default="dummyusername" />
-  <arg name="password" default="dummypassword" />
+  <arg name="username" default="admin" />
+  <arg name="password" default="ka3u1nfkr977" />
   <arg name="hostname" default="192.168.50.3" />
   <arg name="estop_timeout" default="9.0"/>
   <arg name="autonomy_enabled" default="true"/>
@@ -10,10 +10,18 @@
   <arg name="max_angular_velocity_z" default="0"/>
   <arg name="allow_motion" default="true"/>
   <arg name="driver_config" default="$(find spot_driver)/config/spot_ros.yaml"/>
+  <arg name="enable_control" default="false"/>
+  <arg name="include_accessory" default="false"/>
 
   <include file="$(find spot_description)/launch/description.launch" />
-  <include file="$(find spot_driver)/launch/control.launch" />
-  <include file="$(find spot_driver)/launch/accessories.launch" />
+  
+  <group if="$(arg enable_control)">
+    <include file="$(find spot_driver)/launch/control.launch" />
+  </group>
+  
+  <group if="$(arg include_accessory)">
+    <include file="$(find spot_driver)/launch/accessories.launch" />
+  </group>
 
   <node pkg="spot_driver" type="spot_ros" name="spot_ros"  ns="spot" output="screen">
     <rosparam file="$(arg driver_config)" command="load" />
