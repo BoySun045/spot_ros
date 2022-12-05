@@ -73,13 +73,19 @@ COPY ./ros_entrypoint.sh /
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
-
+ 
 
 #######################################################################
 ##                   install additional ros package                  ##
 #######################################################################
 RUN apt-get update && apt-get install -y \
     ros-noetic-checkerboard-detector
+
+#######################################################################
+##                   install spot api                                ##
+#######################################################################
+RUN pip3 install bosdyn-client bosdyn-mission bosdyn-api bosdyn-core
+
 #######################################################################
 ##                            cleaning up                            ##
 #######################################################################
@@ -90,26 +96,30 @@ RUN  rm -rf /var/lib/apt/lists/*
 ##                         catkin setting                            ##
 #######################################################################
 
+
 RUN sudo apt update
 RUN sudo sudo apt install -y \
     python3-catkin-tools \
     python3-osrf-pycommon
 
 #init catkin_ws
-RUN mkdir -p /catkin_ws/src && \
-   cd /catkin_ws/src && \
-   /bin/bash -c 'source /opt/ros/noetic/setup.bash;' && \
-   cd /catkin_ws && \
-   /bin/bash -c 'source /opt/ros/noetic/setup.bash; catkin init'
-
+RUN mkdir -p /catkin_ws/src 
+COPY ./ /catkin_ws/src/spot_ros
 RUN cd /catkin_ws/src && \
-    git clone https://github.com/heuristicus/spot_ros.git -b master && \
-    cd spot_ros && \
-    git checkout bb82c29e9d51d12d57d53c8b4d4faecb600a1bc8
+   /bin/bash -c 'source /opt/ros/noetic/setup.bash;'
+
+# RUN cd /catkin_ws/src && \
+#     git clone https://github.com/heuristicus/spot_ros.git -b master && \
+#     cd spot_ros && \
+#     git checkout bb82c29e9d51d12d57d53c8b4d4faecb600a1bc8
+
+WORKDIR /catkin_ws
+RUN /bin/bash -c ' . /opt/ros/noetic/setup.bash && catkin init  && catkin build' 
 
 RUN cd /catkin_ws && \
-   /bin/bash -c 'source /opt/ros/noetic/setup.bash;'
-RUN echo "source /catkin_ws/devel/setup.bash" >> ~/.bashrc
+    /bin/bash -c 'source devel/setup.bash;'
+
+# RUN echo "source /catkin_ws/devel/setup.bash" >> ~/.bashrc
 
 
 
